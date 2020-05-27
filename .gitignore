@@ -1,0 +1,5 @@
+*.swp 
+data_tusimple/ 
+__pycache__/
+*pyc
+*events.out.tfevents*

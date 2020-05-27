@@ -1,5 +1,6 @@
 # Code copied from pytorch-tutorial https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/04-utils/tensorboard/logger.py 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy as np
 from PIL import Image
 import scipy.misc 

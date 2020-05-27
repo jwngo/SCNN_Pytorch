@@ -49,14 +49,14 @@ transform_train = Compose(Resize(resize_shape), Rotation(2), ToTensor(),
 dataset_name = exp_cfg['dataset'].pop('dataset_name')
 Dataset_Type = getattr(dataset, dataset_name)
 train_dataset = Dataset_Type(Dataset_Path[dataset_name], "train", transform_train)
-train_loader = DataLoader(train_dataset, batch_size=exp_cfg['dataset']['batch_size'], shuffle=True, collate_fn=train_dataset.collate, num_workers=8)
+train_loader = DataLoader(train_dataset, batch_size=exp_cfg['dataset']['batch_size'], shuffle=True, collate_fn=train_dataset.collate, num_workers=0)
 
 # ------------ val data ------------
 transform_val_img = Resize(resize_shape)
 transform_val_x = Compose(ToTensor(), Normalize(mean=mean, std=std))
 transform_val = Compose(transform_val_img, transform_val_x)
 val_dataset = Dataset_Type(Dataset_Path[dataset_name], "val", transform_val)
-val_loader = DataLoader(val_dataset, batch_size=8, collate_fn=val_dataset.collate, num_workers=4)
+val_loader = DataLoader(val_dataset, batch_size=8, collate_fn=val_dataset.collate, num_workers=0)
 
 # ------------ preparation ------------
 net = SCNN(resize_shape, pretrained=True)
@@ -210,6 +210,7 @@ def main():
         start_epoch = 0
 
     exp_cfg['MAX_EPOCHES'] = int(np.ceil(exp_cfg['lr_scheduler']['max_iter'] / len(train_loader)))
+    print(exp_cfg['MAX_EPOCHES'])
     for epoch in range(start_epoch, exp_cfg['MAX_EPOCHES']):
         train(epoch)
         if epoch % 1 == 0:
